@@ -1,7 +1,3 @@
-#Hi Clint! Thanks for your help with this!! I'm hoping this works.. 
-
-#all you need to do is run this code, you can highlight it all if you want
-
 
 #clear environment
 rm(list = ls())
@@ -174,7 +170,6 @@ compute_ccm_web_1 <- function(in_file = "CCM_TCombo_NormSeasonDaily_SCB3.Rdata",
 
 
 compute_ccm_web_1(chunk = 1:5, out_file = "TCombo_NormDaily_ccm_webs_1.Rdata")
-#fuck yeah! that worked!
 
 compute_ccm_web_1(chunk = 6:10, out_file = "TCombo_NormDaily_ccm_webs_2.Rdata")
 
