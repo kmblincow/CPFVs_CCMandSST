@@ -39,7 +39,8 @@ B1 <- A %>%
 
 #Entering block classification in my same excel sheet
 
-#If island blocks are involved, still called NO, as that is in the spirit of vessels choosing to go offshore if bigger offshore fish are biting
+#If island blocks are involved, likely still called NO, as that is in the spirit of vessels choosing to go offshore if bigger offshore fish are biting
+#But cross reference with species targeted to make sure
 
 
 #Some scenarios when I need to reconcile differences--looking into trip type to see if that can help in this process
