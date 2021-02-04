@@ -1,3 +1,9 @@
+#Kayla Blincow
+#2/4/2020
+
+#Running CCM for the IN season daily dataset using leave one out cross-validation,
+#and incorporating seasonal surrogate test
+
 #Note: Much of this code was initially developed by Chase James.
 
 #clear environment
@@ -9,6 +15,107 @@ library(parallel)
 library(pbapply)
 library(purrr)
 library(dplyr)
+
+
+#load data
+load("CCM_TCombo_NormSeasonDaily_SCB3.Rdata")
+
+#I am drawing from my code and Chase's code to generate a script that I can more
+#easily follow. The hope is that I can go through a more systematic approach to 
+#running CCM while using functions to reduce the lines of code.
+
+
+#Here goes nothing!
+
+#check out the data
+head(ts_matrix)
+head(lib)
+head(pred)
+
+#currently the lib and pred are the entire time series, so the simplex will 
+#use leave-one-out-cross-validation over the entire time series
+#****will compare this to other options later****
+
+#Use simplex projection to test for the optimal embedding dimension
+
+#Need to apply this function to every column except the first (which is the date)
+#i.e. we need an optimal E for each time series in the matrix
+
+#Set plotting area so that we can ID optimal embedding dimension using plot
+par(mar = c(4,4,1,1), mfrow = c(2,3), mgp = c(2.5, 1, 0))
+
+#create an object that is the list of species of interest
+varlst <- colnames(ts_matrix)[2:ncol(ts_matrix)]
+
+#create an empty list that to put our simplex output into
+simplex_output_list <- NULL
+
+#run the simplex for each species' weekly ts
+for (i in 1:length(varlst)) {
+  simplex_output_list[[i]] <- simplex(ts_matrix[, c("Date", varlst[i])],
+                                      lib = lib, pred = pred, E = c(2:10))
+  plot(simplex_output_list[[i]]$E, simplex_output_list[[i]]$rho,
+       type= "l", xlab = "Embedding Dimension (E)",
+       ylab = "Forecast Skill (rho)", main = varlst[i])
+}
+
+#this code will output warning messages, but they are okay--just telling us that
+#the simplex is using l-o-o cross validation methods
+
+#create a list of the best Es
+bestE <- sapply(simplex_output_list, function(simplex_output) {
+  simplex_output$E[which.max(simplex_output$rho)]
+})
+
+bestE #check these results against plots that were made.
+
+
+
+#Now we should test for prediction decay (time to prediction (tp) v forecast skill(rho))
+#and non-linearity (nonlinearity(theta) v forecast skill(rho))
+
+#Prediction Decay for each species
+
+#create empty list to put our simplex results into
+pd_simplex_list <- NULL
+
+#run the simplex with the optimal embedding dimensions from above and plot tp v rho
+for (i in 1:length(varlst)) {
+  pd_simplex_list[[i]] <- simplex(ts_matrix[, c("Date", varlst[i])],
+                                  lib = lib, pred = pred, E = bestE[i], tp = 1:10)
+  plot(pd_simplex_list[[i]]$tp, pd_simplex_list[[i]]$rho,
+       type= "l", xlab = "Time to Prediction (tp)",
+       ylab = "Forecast Skill (rho)", main = varlst[i])
+}
+#all of the plots show the relationship we would like (decay with increase in tp)
+
+
+#Nonlinearity Test for each species
+
+#create empty list to put our smap results in
+smap_output_list <- NULL
+
+#run the smap with the optimal embedding dimensions from above and plot theta v rho
+for( i in 1:length(varlst)) {
+  smap_output_list[[i]] <- s_map(ts_matrix[, c("Date", varlst[i])], lib = lib, 
+                                 pred = pred, E = bestE[i], silent = TRUE)
+}
+
+par(mfrow = c(3,2))
+for( i in 1:length(varlst)) {
+  plot(smap_output_list[[i]]$theta, smap_output_list[[i]]$rho, type = "l",
+       xlab = "Nonlinearity (theta)", ylab = "Forecast Skill (rho)", main = varlst[i])
+}
+
+#All the time series suggest nonlinear dynamics in the data (because of the intial
+#rise in rho for non-zero theta, followed by a hsarp drop-off in rho with theta)
+
+#convert E to format we need for next function/save the csv so it can be called.
+bestE <- cbind(bestE, varlst)
+colnames(bestE) <- c("E", "taxa")
+
+write.csv(bestE, "CoolDaily_bestE_TComboSCB3.csv", row.names = FALSE)
+
 
 
 #Now to actually do the cross mapping...
