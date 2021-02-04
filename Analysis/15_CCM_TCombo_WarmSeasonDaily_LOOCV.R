@@ -4,6 +4,8 @@
 #Running CCM for the IN season daily dataset using leave one out cross-validation,
 #and incorporating seasonal surrogate test
 
+#Note: Much of this code was initially developed by Chase James.
+
 #clear environment
 rm(list = ls())
 
@@ -22,8 +24,6 @@ load("CCM_TCombo_NormSeasonDaily_SCB3.Rdata")
 #easily follow. The hope is that I can go through a more systematic approach to 
 #running CCM while using functions to reduce the lines of code.
 
-#NOTE: the actual cross mapping relies on functions found in the Kay_CCM_fnctn.R
-#and CCM_plot_fnctn.R scripts
 
 #Here goes nothing!
 
@@ -120,7 +120,6 @@ write.csv(bestE, "NormDaily_bestE_TComboSCB3.csv", row.names = FALSE)
 
 #Now to actually do the cross mapping...
 
-#Let's Try Chase's crazy function...
 
 compute_ccm_web_1 <- function(in_file = "CCM_TCombo_NormSeasonDaily_SCB3.Rdata", 
                               best_E_file = "NormDaily_bestE_TComboSCB3.csv",
