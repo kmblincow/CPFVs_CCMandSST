@@ -120,7 +120,6 @@ write.csv(bestE, "CoolDaily_bestE_TComboSCB3.csv", row.names = FALSE)
 
 #Now to actually do the cross mapping...
 
-#Let's Try Chase's crazy function...
 
 compute_ccm_web_1 <- function(in_file = "CCM_TCombo_CoolSeasonDaily_SCB3.Rdata", 
                               best_E_file = "CoolDaily_bestE_TComboSCB3.csv",
