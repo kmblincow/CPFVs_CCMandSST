@@ -21,9 +21,6 @@ library("rnaturalearth")
 library("rnaturalearthdata")
 library(cowplot)
 
-world <- ne_countries(scale = "medium", returnclass = "sf")
-class(world)
-
 
 #load my data
 d <- read.table("ZoneA_d.txt", header = T)
