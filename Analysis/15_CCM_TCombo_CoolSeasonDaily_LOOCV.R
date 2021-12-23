@@ -120,7 +120,7 @@ write.csv(bestE, "CoolDaily_bestE_TComboSCB3.csv", row.names = FALSE)
 
 
 
-#Let's Try Chase's crazy function for the final values
+#CCM function for the final values
 
 compute_ccm_web_1 <- function(in_file = "CCM_TCombo_CoolSeasonDaily_SCB3.Rdata", 
                               best_E_file = "CoolDaily_bestE_TComboSCB3.csv",
@@ -278,7 +278,7 @@ compute_ccm_web_1 <- function(in_file = "CCM_TCombo_CoolSeasonDaily_SCB3.Rdata",
 
 
 compute_ccm_web_1(chunk = 1:5, out_file = "TCombo_CoolDaily_ccm_webs_1.Rdata")
-#fuck yeah! that worked!
+#yeah! that worked!
 
 compute_ccm_web_1(chunk = 6:10, out_file = "TCombo_CoolDaily_ccm_webs_2.Rdata")
 
