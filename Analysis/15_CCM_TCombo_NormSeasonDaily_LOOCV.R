@@ -122,7 +122,7 @@ write.csv(bestE, "NormDaily_bestE_TComboSCB3.csv", row.names = FALSE)
 
 #Now to actually do the cross mapping...
 
-#Let's Try Chase's crazy function...
+#CCM function...
 
 compute_ccm_web_1 <- function(in_file = "CCM_TCombo_NormSeasonDaily_SCB3.Rdata", 
                               best_E_file = "NormDaily_bestE_TComboSCB3.csv",
@@ -280,7 +280,7 @@ compute_ccm_web_1 <- function(in_file = "CCM_TCombo_NormSeasonDaily_SCB3.Rdata",
 
 
 compute_ccm_web_1(chunk = 1:5, out_file = "TCombo_NormDaily_ccm_webs_1.Rdata")
-#fuck yeah! that worked!
+#yeah! that worked!
 
 compute_ccm_web_1(chunk = 6:10, out_file = "TCombo_NormDaily_ccm_webs_2.Rdata")
 
